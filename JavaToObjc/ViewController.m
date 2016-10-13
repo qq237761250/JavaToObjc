@@ -116,7 +116,7 @@ typedef enum : NSInteger {
 /**< 转换java的model属性为objc代码 */
 - (NSString *)converModelToObjcCode:(NSString *)javacode {
     NSString *objcCode = javacode;
-    objcCode = [objcCode stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@\\s{1,5}(\\S{1,20})\\s{1,5}(\\S{1,20};)", kRegexModifierCharacter]
+    objcCode = [objcCode stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@\\s{1,5}(\\S{1,50})\\s{1,5}(\\S{1,50};)", kRegexModifierCharacter]
                                                    withString:@"@property (strong, nonatomic) $3Model *$4"
                                                       options:NSRegularExpressionSearch
                                                         range:NSMakeRange(0, [objcCode length])];   //java的model属性转换为objc的model属性
