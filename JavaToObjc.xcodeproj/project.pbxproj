@@ -260,6 +260,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = JavaToObjc/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Kyo.JavaToObjc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -272,6 +273,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = JavaToObjc/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Kyo.JavaToObjc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -296,6 +298,7 @@
 				31B343D11DAE8A7D00D14818 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

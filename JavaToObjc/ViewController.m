@@ -22,13 +22,13 @@ typedef enum : NSInteger {
     JavaValueTypeString = 8,
     JavaValueTypeInteger = 9,
     JavaValueTypeList = 10,
-    JavaValueTypeBoolean = 11,
+    JavaValueTypeDate = 11,
 } JavaValueType;
 
 @interface ViewController()
 
 @property (unsafe_unretained) IBOutlet NSTextView *txtvJava;
-@property (weak) IBOutlet NSTextView *txtvObjc;
+@property (unsafe_unretained) IBOutlet NSTextView *txtvObjc;
 @property (weak) IBOutlet NSButton *btnConver;
 
 - (NSString *)converToObjc:(NSString *)javaCode;    /**< 转换成objc代码 */
@@ -99,9 +99,13 @@ typedef enum : NSInteger {
 - (NSString *)converTypeToObjcCode:(NSString *)javaCode withType:(JavaValueType)type {
     NSString *objcCode = javaCode;
     NSString *javaType = [self strJavaValueType:type];
+    NSString *capitalizedJavaType = [NSString stringWithFormat:@"%@%@",[[javaType substringWithRange:NSMakeRange(0, 1)] uppercaseString], [javaType substringFromIndex:1]];
     NSString *objcType = [self strObjcValueType:type];
     
     objcCode = [objcCode stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@\\s%@",kRegexModifierCharacter, javaType]
+                                                   withString:[NSString stringWithFormat:@"%@", objcType]
+                                                      options:NSRegularExpressionSearch range:NSMakeRange(0, objcCode.length)];
+    objcCode = [objcCode stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@\\s%@",kRegexModifierCharacter, capitalizedJavaType]
                                                    withString:[NSString stringWithFormat:@"%@", objcType]
                                                       options:NSRegularExpressionSearch range:NSMakeRange(0, objcCode.length)];
 
@@ -121,18 +125,18 @@ typedef enum : NSInteger {
 /**< 获取Java单位 */
 - (NSString *)strJavaValueType:(JavaValueType)type {
     NSDictionary *dictType = @{
-                               @(0): @"Byte\\s",
-                               @(1): @"Short\\s",
-                               @(2): @"Int\\s",
-                               @(3): @"Long\\s",
-                               @(4): @"Float\\s",
-                               @(5): @"Double\\s",
+                               @(0): @"byte\\s",
+                               @(1): @"short\\s",
+                               @(2): @"int\\s",
+                               @(3): @"long\\s",
+                               @(4): @"float\\s",
+                               @(5): @"double\\s",
                                @(6): @"boolean\\s",
-                               @(7): @"Char\\s",
-                               @(8): @"String\\s",
-                               @(9): @"Integer\\s",
-                               @(10): @"List",
-                               @(11): @"Boolean\\s",
+                               @(7): @"char\\s",
+                               @(8): @"string\\s",
+                               @(9): @"integer\\s",
+                               @(10): @"list",
+                               @(11): @"date\\s",
                                @(12): @"个",
                                @(13): @"周岁",
                                @(14): @"岁" //(实现是:岁（起保日）)
@@ -154,7 +158,7 @@ typedef enum : NSInteger {
                                @(8): @"@property (copy, nonatomic) NSString *",
                                @(9): @"@property (assign, nonatomic) NSInteger ",
                                @(10): @"@property (strong, nonatomic) NSArray",
-                               @(11): @"@property (assign, nonatomic) BOOL ",
+                               @(11): @"@property (copy, nonatomic) NSString *",
                                @(12): @"个",
                                @(13): @"周岁",
                                @(14): @"岁" //(实现是:岁（起保日）)
