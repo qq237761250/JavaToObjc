@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-static NSString *const kRegexModifierCharacter = @"(private|public)";    /**< java属性修饰符 */
+static NSString *const kRegexModifierCharacter = @"(private|public)(\\sstatic\\sfinal){0,1}";    /**< java属性修饰符 */
 
 typedef enum : NSInteger {
     JavaValueTypeByte = 0,
@@ -23,6 +23,7 @@ typedef enum : NSInteger {
     JavaValueTypeInteger = 9,
     JavaValueTypeList = 10,
     JavaValueTypeDate = 11,
+    JavaValueTypeBigDecimal = 12,
 } JavaValueType;
 
 @interface ViewController()
@@ -74,7 +75,7 @@ typedef enum : NSInteger {
 /**< 转换成objc代码 */
 - (NSString *)converToObjc:(NSString *)javaCode {
     NSString *objcCode = [self clearUnUseChar:javaCode];
-    for (NSInteger i = 0; i <= 11; i++) {
+    for (NSInteger i = 0; i <= 12; i++) {
         objcCode = [self converTypeToObjcCode:objcCode withType:i];
     }
     objcCode = [self converModelToObjcCode:objcCode];
@@ -116,7 +117,7 @@ typedef enum : NSInteger {
 - (NSString *)converModelToObjcCode:(NSString *)javacode {
     NSString *objcCode = javacode;
     objcCode = [objcCode stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@\\s{1,5}(\\S{1,20})\\s{1,5}(\\S{1,20};)", kRegexModifierCharacter]
-                                                   withString:@"@property (strong, nonatomic) $2Model *$3"
+                                                   withString:@"@property (strong, nonatomic) $3Model *$4"
                                                       options:NSRegularExpressionSearch
                                                         range:NSMakeRange(0, [objcCode length])];   //java的model属性转换为objc的model属性
     return objcCode;
@@ -137,7 +138,7 @@ typedef enum : NSInteger {
                                @(9): @"integer\\s",
                                @(10): @"list",
                                @(11): @"date\\s",
-                               @(12): @"个",
+                               @(12): @"bigDecimal\\s",
                                @(13): @"周岁",
                                @(14): @"岁" //(实现是:岁（起保日）)
                                };
@@ -159,7 +160,7 @@ typedef enum : NSInteger {
                                @(9): @"@property (assign, nonatomic) NSInteger ",
                                @(10): @"@property (strong, nonatomic) NSArray",
                                @(11): @"@property (copy, nonatomic) NSString *",
-                               @(12): @"个",
+                               @(12): @"@property (strong, nonatomic) NSDecimalNumber *",
                                @(13): @"周岁",
                                @(14): @"岁" //(实现是:岁（起保日）)
                                };
